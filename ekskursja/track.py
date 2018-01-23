@@ -734,4 +734,27 @@ class Track(object):
             outFeature.Destroy()
 
         logger.info('%d tracks saved to ''%s''' % (len(self.tracks), os.path.basename(filename)))   
-        outDataSource.Destroy()                     
+        outDataSource.Destroy()
+
+    def snap(self, x, y, acc = 1000):
+        point = ogr.Geometry(ogr.wkbPoint)
+        point.AddPoint(x, y)
+        point2180 = tools.from4326to2180(point)
+
+        s = -1
+        d = float("inf")
+
+        i = 0
+        while i <= self.length():
+            p = self.getPointAtDist(i)
+            d1 = point2180.Distance(p)
+
+            if d1 < d :
+                d = d1
+                s = i
+
+            # logger.info('Distance at %d: %.1f' %(i, d1))
+
+            i += acc
+
+        return s
