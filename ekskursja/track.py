@@ -736,7 +736,7 @@ class Track(object):
         logger.info('%d tracks saved to ''%s''' % (len(self.tracks), os.path.basename(filename)))   
         outDataSource.Destroy()
 
-    def snap(self, x, y, acc = 1000):
+    def snap(self, x, y, acc = 100):
         point = ogr.Geometry(ogr.wkbPoint)
         point.AddPoint(x, y)
         point2180 = tools.from4326to2180(point)
